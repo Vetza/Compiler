@@ -1,3 +1,9 @@
-x = 3
-y = 7
+x = 3;
+y = 7;
+
+sum = x + y;
+product = x * y;
+
+print("The sum is {sum} and the product is {product}");
+
 
