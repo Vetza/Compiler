@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CodeLite_Project Name="compiler" Version="11000" InternalType="Console">
+  <VirtualDirectory Name="Minilang">
+    <File Name="Minilang/math-example.txt"/>
+  </VirtualDirectory>
   <Description/>
   <Dependencies/>
   <Settings Type="Executable">
@@ -93,6 +96,6 @@
     </Configuration>
   </Settings>
   <VirtualDirectory Name="src">
-    <File Name="main.cpp"/>
+    <File Name="src/main.cpp"/>
   </VirtualDirectory>
 </CodeLite_Project>
