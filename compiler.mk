@@ -63,7 +63,7 @@ AS       := C:/mingw64/mingw64/bin/as.exe
 ## User defined environment variables
 ##
 CodeLiteDir:=C:\Program Files\CodeLite/share/codelite
-Objects0=$(IntermediateDirectory)/src_lexer.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_main.cpp$(ObjectSuffix) 
+Objects0=$(IntermediateDirectory)/src_lexer.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_main.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_tokens.cpp$(ObjectSuffix) 
 
 
 
@@ -103,6 +103,11 @@ $(IntermediateDirectory)/src_main.cpp$(ObjectSuffix): src/main.cpp
 	$(CXX) $(IncludePCH) $(SourceSwitch) "C:/Users/User/Documents/codelite/compiler/compiler/src/main.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_main.cpp$(ObjectSuffix) $(IncludePath)
 $(IntermediateDirectory)/src_main.cpp$(PreprocessSuffix): src/main.cpp
 	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/src_main.cpp$(PreprocessSuffix) src/main.cpp
+
+$(IntermediateDirectory)/src_tokens.cpp$(ObjectSuffix): src/tokens.cpp 
+	$(CXX) $(IncludePCH) $(SourceSwitch) "C:/Users/User/Documents/codelite/compiler/compiler/src/tokens.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_tokens.cpp$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/src_tokens.cpp$(PreprocessSuffix): src/tokens.cpp
+	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/src_tokens.cpp$(PreprocessSuffix) src/tokens.cpp
 
 ##
 ## Clean

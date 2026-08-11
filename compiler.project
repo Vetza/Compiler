@@ -6,6 +6,9 @@
   <Description/>
   <Dependencies/>
   <VirtualDirectory Name="src">
+    <File Name="src/lexer.h"/>
+    <File Name="src/tokens.h"/>
+    <File Name="src/tokens.cpp"/>
     <File Name="src/lexer.cpp"/>
     <File Name="src/main.cpp"/>
   </VirtualDirectory>
