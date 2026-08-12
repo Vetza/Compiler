@@ -6,6 +6,8 @@
   <Description/>
   <Dependencies/>
   <VirtualDirectory Name="src">
+    <File Name="src/todo.txt"/>
+    <File Name="src/parser.cpp"/>
     <File Name="src/lexer.h"/>
     <File Name="src/tokens.h"/>
     <File Name="src/tokens.cpp"/>

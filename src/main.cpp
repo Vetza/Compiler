@@ -5,15 +5,22 @@
 #include "lexer.h"
 #include "tokens.h"
 
+#include "parser.cpp"
+
 using namespace std;
 
 int main() {
     lexer mylexer;
-    vector<token> finalvectorlist = mylexer.lexerinput("4  + 4 = 'insert answer here!';");
+    vector<token> finalvectorlist = mylexer.lexerinput("4  * 4 = 'insert answer here!' 5+4 ;");
     cout<<"\nList of Tokens \n";
     for (size_t i = 0; i < finalvectorlist.size(); i++) {
         cout << "Token type: " << finalvectorlist[i].getTokentype() << " Token value: " << finalvectorlist[i].getTokenvalue() << endl;
     }
+    
+    parser myparser;
+    myparser.parseProgram(finalvectorlist);
+    
+    
 	return 0;
 }
 

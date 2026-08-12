@@ -1,0 +1,3 @@
+Figure out naming conventions and change fix them
+
+cleanup the nodes in the ast and use unique_ptr

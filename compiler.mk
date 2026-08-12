@@ -14,7 +14,7 @@ CurrentFileName        :=
 CurrentFilePath        :=
 CurrentFileFullPath    :=
 User                   :=User
-Date                   :=11/08/2026
+Date                   :=12/08/2026
 CodeLitePath           :="C:/Program Files/CodeLite/share/codelite"
 MakeDirCommand         :=mkdir
 LinkerName             :=C:/mingw64/mingw64/bin/g++.exe
@@ -63,7 +63,7 @@ AS       := C:/mingw64/mingw64/bin/as.exe
 ## User defined environment variables
 ##
 CodeLiteDir:=C:\Program Files\CodeLite/share/codelite
-Objects0=$(IntermediateDirectory)/src_lexer.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_main.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_tokens.cpp$(ObjectSuffix) 
+Objects0=$(IntermediateDirectory)/src_lexer.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_main.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_tokens.cpp$(ObjectSuffix) $(IntermediateDirectory)/src_parser.cpp$(ObjectSuffix) 
 
 
 
@@ -108,6 +108,11 @@ $(IntermediateDirectory)/src_tokens.cpp$(ObjectSuffix): src/tokens.cpp
 	$(CXX) $(IncludePCH) $(SourceSwitch) "C:/Users/User/Documents/codelite/compiler/compiler/src/tokens.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_tokens.cpp$(ObjectSuffix) $(IncludePath)
 $(IntermediateDirectory)/src_tokens.cpp$(PreprocessSuffix): src/tokens.cpp
 	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/src_tokens.cpp$(PreprocessSuffix) src/tokens.cpp
+
+$(IntermediateDirectory)/src_parser.cpp$(ObjectSuffix): src/parser.cpp 
+	$(CXX) $(IncludePCH) $(SourceSwitch) "C:/Users/User/Documents/codelite/compiler/compiler/src/parser.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/src_parser.cpp$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/src_parser.cpp$(PreprocessSuffix): src/parser.cpp
+	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/src_parser.cpp$(PreprocessSuffix) src/parser.cpp
 
 ##
 ## Clean
