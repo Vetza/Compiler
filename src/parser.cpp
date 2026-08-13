@@ -58,73 +58,18 @@ class parser{
             cout<<"\nSize of vector list: "<< vectorSize;
             while (cursor < vectorSize){
                 tokens currentToken = tokensList[cursor].getTokentype();
-                cout<< "\ncursor position "<<cursor;
                 
-                switch(currentToken){
-                    case TOKEN_VARIABLE:
-                        cout<<" Found a variable";
-                        parsePrimary(tokensList[cursor]);
-                        break; 
-                    case TOKEN_OPEN_PAREN:
-                        cout<<" Found an open bracket";
-                        break; 
-                    case TOKEN_CLOSE_PAREN:
-                        cout<<" Found a closing bracket";
-                        break; 
-                    case TOKEN_SEMICOLON:
-                        cout<<" Found a semicolon";
-                        break; 
-                    case TOKEN_EQUALITY:
-                        cout<<" Found an equal sign";
-                        break; 
-                    case TOKEN_PLUS:{
-                        cout<<" Found a plus sign";
-                        ASTNode* leftNode = parsePrimary(tokensList[cursor-1]);
-                        ASTNode* rightNode = parsePrimary(tokensList[cursor+1]);
-                        ASTNode* node = parseBinary(tokensList[cursor], leftNode, rightNode);
-                        cout<< "\nNode Value: "<<node->value << " Node left: "<<node->left->value<<" Node right: "<<node->right->value;
-                        break;                         
-                    }
-                      case TOKEN_MINUS:{
-                        cout<<" Found a minus sign";
-                        ASTNode* leftNode = parsePrimary(tokensList[cursor-1]);
-                        ASTNode* rightNode = parsePrimary(tokensList[cursor+1]);
-                        ASTNode* node = parseBinary(tokensList[cursor], leftNode, rightNode);
-                        cout<< "\nNode Value: "<<node->value << " Node left: "<<node->left->value<<" Node right: "<<node->right->value;
-                        break;                          
-                      }
-                      case TOKEN_MULTIPLICATION:{
-                        cout<<" Found a multiplication sign";
-                        ASTNode* leftNode = parsePrimary(tokensList[cursor-1]);
-                        ASTNode* rightNode = parsePrimary(tokensList[cursor+1]);
-                        ASTNode* node = parseBinary(tokensList[cursor], leftNode, rightNode);
-                        cout<< "\nNode Value: "<<node->value << " Node left: "<<node->left->value<<" Node right: "<<node->right->value;
-                        break;                           
-                      }
-                      case TOKEN_DIVISION:{
-                        cout<<" Found a division sign";
-                        ASTNode* leftNode = parsePrimary(tokensList[cursor-1]);
-                        ASTNode* rightNode = parsePrimary(tokensList[cursor+1]);
-                        ASTNode* node = parseBinary(tokensList[cursor], leftNode, rightNode);
-                        cout<< "\nNode Value: "<<node->value << " Node left: "<<node->left->value<<" Node right: "<<node->right->value;
-                        break;                           
-                      }
-                      case TOKEN_NUMBER:{
-                        cout<<" Found a number";
-                        ASTNode* node = parsePrimary(tokensList[cursor]);
-                        cout<< "\nNode Value: "<<node->value;
-                        break;                         
-                    }
-                      case TOKEN_STRING:
-                        cout<<" Found a string";
-                        parsePrimary(tokensList[cursor]);
-                       break; 
+                if ((currentToken == TOKEN_VARIABLE) || (currentToken == TOKEN_NUMBER)){
+                        ASTNode* root = parseExpression(tokensList, cursor);
+                        cout<< "\nRoot Value: "<<root->value << " Root left: "<<root->left->value<<" Root right: "<<root->right->value;   
                 }
                 cursor ++;
             }
         }
         // identify primary expressions- which are expressions that can exist on their own without needing a binary operator
+// THESE ARE THE EXPRESSIONS THAT WILL LIE ON EITHER SIDE OF THE BINARY OPERATOR! PARENTHESIS COUNT HERE!!        
         ASTNode* parsePrimary(token primaryToken){
+// maybe use switches here instead            
             if(primaryToken.getTokentype() == TOKEN_NUMBER){
                 cout<<"\nThis is a number";
                 
@@ -136,10 +81,10 @@ class parser{
                 cout<<"\nThis is a variable";
                 return new VariableNode(primaryToken.getTokenvalue());
             }
-            if(primaryToken.getTokentype() == TOKEN_STRING){
-                cout<<"\nThis is a string";
-                return new StringNode(primaryToken.getTokenvalue());
-            }
+//            if(primaryToken.getTokentype() == TOKEN_STRING){
+//                cout<<"\nThis is a string";
+//                return new StringNode(primaryToken.getTokenvalue());
+//            }
             return nullptr;
         }
         
@@ -161,6 +106,36 @@ class parser{
                 return new BinaryNode(primaryToken.getTokenvalue(), left, right);
             }
             return nullptr;
+        }
+        
+        //pass a reference to the original cursor
+        //must return the root node
+        ASTNode* parseExpression(vector<token> tokensList, size_t& cursor){
+            ASTNode* left = nullptr;
+            ASTNode* right = nullptr;
+            ASTNode* root = nullptr;
+            token binaryToken;
+            token currentToken = tokensList[cursor];
+            while ((cursor < tokensList.size()) && (currentToken.getTokentype() != TOKEN_SEMICOLON)){
+                if ((currentToken.getTokentype() == TOKEN_VARIABLE) || (currentToken.getTokentype() == TOKEN_NUMBER) || (currentToken.getTokentype() == TOKEN_STRING)){
+                    if (left == nullptr){
+                        left = parsePrimary(currentToken);
+                    } else{
+                        right = parsePrimary(currentToken);
+                    }
+                } else{
+                    binaryToken = currentToken;
+                }
+                cout<<"\nEUREKA "<<currentToken.getTokenvalue();
+                cursor++;
+                if (cursor < tokensList.size()){
+                    currentToken = tokensList[cursor];
+                } else{
+                    break;
+                }
+            }
+            root = parseBinary(binaryToken, left, right);
+            return root;
         }
 };
     

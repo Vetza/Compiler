@@ -4,6 +4,7 @@
 using namespace std;
 
 enum tokens{
+    TOKEN_NONE,
     //Identifiers
     TOKEN_VARIABLE,
     //Symbols
@@ -27,6 +28,7 @@ class token{
         string tokenvalue;
     public:
         token(tokens tokentype, string tokenvalue);
+        token();
         
         string getTokenvalue();
         tokens getTokentype();
