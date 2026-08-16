@@ -11,7 +11,7 @@ using namespace std;
 
 int main() {
     lexer mylexer;
-    vector<token> finalvectorlist = mylexer.lexerinput("4 + 4; 5-5");
+    vector<token> finalvectorlist = mylexer.lexerinput("4 * 5 * 8");
     cout<<"\nList of Tokens \n";
     for (size_t i = 0; i < finalvectorlist.size(); i++) {
         cout << "Token type: " << finalvectorlist[i].getTokentype() << " Token value: " << finalvectorlist[i].getTokenvalue() << endl;
@@ -19,7 +19,6 @@ int main() {
     
     parser myparser;
     myparser.parseProgram(finalvectorlist);
-    
     
 	return 0;
 }

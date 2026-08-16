@@ -5,3 +5,5 @@ cleanup the nodes in the ast and use unique_ptr
 cleanup primarytoken names in parser
 
 tests?
+
+does astnode* and new binary node do same thing

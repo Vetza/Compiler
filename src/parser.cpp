@@ -52,6 +52,20 @@ class BinaryNode: public ASTNode{
 //===================================================================================================================================================
 class parser{
     public:
+        int getPrecedence(tokens type){
+            switch(type){
+                case TOKEN_PLUS:
+                case TOKEN_MINUS:
+                    return 20;
+                case TOKEN_MULTIPLICATION:
+                case TOKEN_DIVISION:
+                    return 40;
+                
+                default:
+                    return -1;
+            }
+        }
+        
         void parseProgram(vector<token> tokensList){
             size_t cursor = 0;
             size_t vectorSize = tokensList.size();
@@ -71,14 +85,14 @@ class parser{
         ASTNode* parsePrimary(token primaryToken){
 // maybe use switches here instead            
             if(primaryToken.getTokentype() == TOKEN_NUMBER){
-                cout<<"\nThis is a number";
+         
                 
                 //cannot just return "number", as it is a numbernode object. new returns a pointer to the newly created object
                 return new NumberNode(primaryToken.getTokenvalue());
                 //BUT WITH NEW, WE ARE RESPONSIBLE FOR DESTROYING THIS OBJECT
             }
             if(primaryToken.getTokentype() == TOKEN_VARIABLE){
-                cout<<"\nThis is a variable";
+           
                 return new VariableNode(primaryToken.getTokenvalue());
             }
 //            if(primaryToken.getTokentype() == TOKEN_STRING){
@@ -88,54 +102,74 @@ class parser{
             return nullptr;
         }
         
-        ASTNode* parseBinary(token primaryToken, ASTNode* left, ASTNode* right){
-            if (primaryToken.getTokentype() == TOKEN_PLUS){
-                cout<<"\nPlus symbol";
-                return new BinaryNode(primaryToken.getTokenvalue(), left, right);
+        ASTNode* parseBinary(ASTNode* left, size_t& cursor, vector<token> tokensList, int currentPrecedence){
+            cout << "\nENTER parseBinary: cursor=" << cursor << " token=" << tokensList[cursor].getTokenvalue();
+            ASTNode* tempRight = nullptr;
+            token currentOperator = tokensList[cursor];
+            token currentToken = tokensList[cursor];
+//            int currentPrecedence = getPrecedence(currentToken.getTokentype());
+
+            cursor ++;
+            if (cursor < tokensList.size()){
+                currentToken = tokensList[cursor];
             }
-            if (primaryToken.getTokentype() == TOKEN_MINUS){
-                cout<<"\nMinus symbol";
-                return new BinaryNode(primaryToken.getTokenvalue(), left, right);
+            
+            while ((cursor < tokensList.size()) && (currentToken.getTokentype() != TOKEN_SEMICOLON)){
+                //if binary
+                cout<<"\nOld Precedence: "<<currentPrecedence << " Token being checked: "<< currentToken.getTokenvalue();
+                if ((currentToken.getTokentype() == TOKEN_PLUS) || (currentToken.getTokentype() == TOKEN_MINUS) || (currentToken.getTokentype() == TOKEN_MULTIPLICATION) || (currentToken.getTokentype() == TOKEN_DIVISION)){
+                    int newPrecedence = getPrecedence(currentToken.getTokentype());
+                    cout<<"\nNew Precedence: "<<newPrecedence;
+                    if (newPrecedence>currentPrecedence){
+//                        currentPrecedence = newPrecedence;
+                        cout << "\nBEFORE RECURSION";
+                        cout << "\nRECURSING WITH LEFT = "
+     << (tempRight ? tempRight->value : "NULL");
+                        tempRight = parseBinary(tempRight, cursor, tokensList, newPrecedence);
+                        cout << "\nAFTER RECURSION";
+                    }else{break;}   
+                }
+                //if primary
+                else if ((currentToken.getTokentype() == TOKEN_VARIABLE) || (currentToken.getTokentype() == TOKEN_NUMBER) || (currentToken.getTokentype() == TOKEN_STRING)){
+                    tempRight = parsePrimary(tokensList[cursor]);
+                    cursor ++;
+                    if (cursor < tokensList.size()){
+                    currentToken = tokensList[cursor];
+                    }
+                } 
             }
-            if (primaryToken.getTokentype() == TOKEN_MULTIPLICATION){
-                cout<<"\nMultiplication symbol";
-                return new BinaryNode(primaryToken.getTokenvalue(), left, right);
-            }
-            if (primaryToken.getTokentype() == TOKEN_DIVISION){
-                cout<<"\nDivision symbol";
-                return new BinaryNode(primaryToken.getTokenvalue(), left, right);
-            }
-            return nullptr;
+            
+            ASTNode* result = new BinaryNode(currentOperator.getTokenvalue(), left, tempRight);
+            cout<<"\nResult value: "<<result->value << " Result left: "<< result->left->value << 
+            " Result right: " << result->right->value;
+            return result;
+            
         }
         
         //pass a reference to the original cursor
         //must return the root node
         ASTNode* parseExpression(vector<token> tokensList, size_t& cursor){
             ASTNode* left = nullptr;
-            ASTNode* right = nullptr;
-            ASTNode* root = nullptr;
-            token binaryToken;
+            ASTNode* ASTtree = nullptr;
             token currentToken = tokensList[cursor];
             while ((cursor < tokensList.size()) && (currentToken.getTokentype() != TOKEN_SEMICOLON)){
                 if ((currentToken.getTokentype() == TOKEN_VARIABLE) || (currentToken.getTokentype() == TOKEN_NUMBER) || (currentToken.getTokentype() == TOKEN_STRING)){
-                    if (left == nullptr){
-                        left = parsePrimary(currentToken);
-                    } else{
-                        right = parsePrimary(currentToken);
+                    left = parsePrimary(currentToken);
+                    cursor++;
+                    if (cursor < tokensList.size()){
+                        currentToken = tokensList[cursor];
+                    } else{break;}
+                } else if ((currentToken.getTokentype() == TOKEN_PLUS) || (currentToken.getTokentype() == TOKEN_MINUS) || (currentToken.getTokentype() == TOKEN_MULTIPLICATION) || (currentToken.getTokentype() == TOKEN_DIVISION)){
+                    ASTtree = parseBinary(left, cursor, tokensList, getPrecedence(currentToken.getTokentype()));
+                    cursor++;
+        
+                     if (cursor < tokensList.size()){
+                        currentToken = tokensList[cursor];
                     }
-                } else{
-                    binaryToken = currentToken;
                 }
-                cout<<"\nEUREKA "<<currentToken.getTokenvalue();
-                cursor++;
-                if (cursor < tokensList.size()){
-                    currentToken = tokensList[cursor];
-                } else{
-                    break;
-                }
+       
             }
-            root = parseBinary(binaryToken, left, right);
-            return root;
+            return ASTtree;
         }
 };
     
