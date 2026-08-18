@@ -7,3 +7,6 @@ cleanup primarytoken names in parser
 tests?
 
 does astnode* and new binary node do same thing
+
+One small design improvement: instead of passing the entire vector<token> by value, eventually make it:
+const vector<token>& tokensList

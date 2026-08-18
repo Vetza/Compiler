@@ -6,6 +6,9 @@
   <Description/>
   <Dependencies/>
   <VirtualDirectory Name="src">
+    <File Name="src/parser.h"/>
+    <File Name="src/astnode.cpp"/>
+    <File Name="src/astnode.h"/>
     <File Name="src/todo.txt"/>
     <File Name="src/parser.cpp"/>
     <File Name="src/lexer.h"/>

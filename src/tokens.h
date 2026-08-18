@@ -1,7 +1,6 @@
 #pragma once
 
 #include <string>
-using namespace std;
 
 enum tokens{
     TOKEN_NONE,
@@ -25,11 +24,11 @@ enum tokens{
 class token{
     private:
         tokens tokentype;
-        string tokenvalue;
+        std::string tokenvalue;
     public:
-        token(tokens tokentype, string tokenvalue);
+        token(tokens tokentype, std::string tokenvalue);
         token();
         
-        string getTokenvalue();
-        tokens getTokentype();
+        std::string getTokenvalue() const;
+        tokens getTokentype() const;
 };

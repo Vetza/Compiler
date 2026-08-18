@@ -13,5 +13,5 @@ token::token(){
     tokenvalue = "";
 }
 
-string token::getTokenvalue(){return tokenvalue;}
-tokens token::getTokentype(){return tokentype;}
+string token::getTokenvalue() const {return tokenvalue;}
+tokens token::getTokentype() const {return tokentype;}
