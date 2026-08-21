@@ -6,6 +6,7 @@
   <Description/>
   <Dependencies/>
   <VirtualDirectory Name="src">
+    <File Name="src/ASTEvaluator.cpp"/>
     <File Name="src/parser.h"/>
     <File Name="src/astnode.cpp"/>
     <File Name="src/astnode.h"/>

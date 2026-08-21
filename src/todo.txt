@@ -8,5 +8,5 @@ tests?
 
 does astnode* and new binary node do same thing
 
-One small design improvement: instead of passing the entire vector<token> by value, eventually make it:
-const vector<token>& tokensList
+Also, one thing I'd change conceptually: your evaluator currently has no way for parseProgram()/main() to know that an error occurred. It only prints the error internally.
+That's something you'll eventually want to fix when you build proper interpreter error handling.

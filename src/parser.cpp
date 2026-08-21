@@ -18,17 +18,25 @@ int parser::getPrecedence(tokens type){
     }
 }
         
-void parser::parseProgram(vector<token> tokensList){
+ASTNode* parser::parseProgram(const vector<token>& tokensList){
     size_t cursor = 0;
     size_t vectorSize = tokensList.size();
+    ASTNode* root = nullptr;
     while (cursor < vectorSize){
         tokens currentToken = tokensList[cursor].getTokentype();
         if ((currentToken == TOKEN_VARIABLE) || (currentToken == TOKEN_NUMBER) || (currentToken == TOKEN_OPEN_PAREN)){
-                ASTNode* root = parseExpression(tokensList, cursor);
-                cout<< "\nRoot Value: "<<root->value << " Root left: "<<root->left->value<<" Root right: "<<root->right->value;   
+                root = parseExpression(tokensList, cursor);
+                cout<< "\nRoot Value: "<<root->value;
+                if(root->left){
+                    cout<< " Root left: "<<root->left->value;
+                }
+                if(root->right){
+                    cout<< " Root right: "<<root->right->value;
+                }
         }
         cursor ++;
     }
+    return root;
 }
 
 // identify primary expressions- which are expressions that can exist on their own without needing a binary operator

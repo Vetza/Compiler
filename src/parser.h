@@ -10,7 +10,7 @@ class parser{
     public:
         int getPrecedence(tokens type);
         
-        void parseProgram(std::vector<token> tokensList);
+        ASTNode* parseProgram(const std::vector<token>& tokensList);
             
         ASTNode* parsePrimary(token primaryToken, const std::vector<token>& tokensList, std::size_t& cursor);
         
